@@ -1,15 +1,7 @@
 ## Description
 
 Procurement API v6 is the backend service for vendor, contract, invoice,
-renewal, and dashboard workflows.
-
-## Batch 2 Scope
-
-This batch adds the procurement business API surface on top of the existing
-service shell, Prisma schema, Swagger setup, and procurement auth foundation.
-The service intentionally does not include local login, local user CRUD,
-frontend work, pagination, or new persistence concepts beyond the existing
-Prisma models.
+renewal, and dashboard workflows.  This service is used by the procurement platform-ui sub-app, interal to Topcoder staff.
 
 ## Routes
 
