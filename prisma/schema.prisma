@@ -1,0 +1,120 @@
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum ContractStatus {
+  draft
+  active
+  expired
+  terminated
+}
+
+enum InvoiceStatus {
+  draft
+  issued
+  paid
+  cancelled
+}
+
+enum RenewalStage {
+  quotation
+  vra
+  cio_approval
+  legal_review
+  order_form_signed
+  pr_creation
+  pr_approvals
+  po_release
+}
+
+model Vendor {
+  id           String     @id @default(dbgenerated("nanoid()")) @db.VarChar(14)
+  name         String
+  contactName  String?
+  contactEmail String?
+  contactPhone String?
+  address      String?
+  category     String?
+  notes        String?    @db.Text
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  contracts    Contract[]
+  invoices     Invoice[]
+}
+
+model Contract {
+  id                String         @id @default(dbgenerated("nanoid()")) @db.VarChar(14)
+  vendorId          String         @db.VarChar(14)
+  contractNumber    String
+  title             String
+  description       String?        @db.Text
+  startDate         DateTime
+  endDate           DateTime
+  value             Decimal        @db.Decimal(14, 2)
+  autoRenew         Boolean        @default(false)
+  renewalNoticeDays Int?
+  status            ContractStatus @default(active)
+  createdAt         DateTime       @default(now())
+  updatedAt         DateTime       @updatedAt
+  vendor            Vendor         @relation(fields: [vendorId], references: [id], onDelete: Restrict)
+  invoices          Invoice[]
+  renewals          Renewal[]
+
+  @@index([vendorId])
+  @@index([endDate])
+  @@index([status])
+}
+
+model Invoice {
+  id            String        @id @default(dbgenerated("nanoid()")) @db.VarChar(14)
+  vendorId      String        @db.VarChar(14)
+  contractId    String?       @db.VarChar(14)
+  invoiceNumber String
+  amount        Decimal       @db.Decimal(14, 2)
+  invoiceDate   DateTime
+  dueDate       DateTime
+  paidDate      DateTime?
+  status        InvoiceStatus @default(issued)
+  description   String?       @db.Text
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  vendor        Vendor        @relation(fields: [vendorId], references: [id], onDelete: Restrict)
+  contract      Contract?     @relation(fields: [contractId], references: [id], onDelete: Restrict)
+
+  @@index([vendorId])
+  @@index([contractId])
+  @@index([dueDate])
+  @@index([status])
+}
+
+model Renewal {
+  id                    String       @id @default(dbgenerated("nanoid()")) @db.VarChar(14)
+  contractId            String       @db.VarChar(14)
+  renewalTermMonths     Int
+  newStartDate          DateTime
+  newEndDate            DateTime
+  newValue              Decimal?     @db.Decimal(14, 2)
+  stage                 RenewalStage @default(quotation)
+  assignee              String?
+  notes                 String?      @db.Text
+  quotationAt           DateTime?
+  vraAt                 DateTime?
+  cioApprovalAt         DateTime?
+  legalReviewAt         DateTime?
+  orderFormSignedAt     DateTime?
+  prCreationAt          DateTime?
+  prApprovalsAt         DateTime?
+  poReleaseAt           DateTime?
+  createdAt             DateTime     @default(now())
+  updatedAt             DateTime     @updatedAt
+  contract              Contract     @relation(fields: [contractId], references: [id], onDelete: Restrict)
+
+  @@index([contractId])
+  @@index([stage])
+}
