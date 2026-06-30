@@ -4,7 +4,7 @@ WORKDIR /usr/src/app
 
 # ---- Dependencies Stage ----
 FROM base AS deps
-RUN npm install -g pnpm
+RUN npm install -g pnpm@10.33.2
 COPY package.json pnpm-lock.yaml ./
 RUN pnpm install --frozen-lockfile
 COPY prisma ./prisma
@@ -12,7 +12,7 @@ RUN DATABASE_URL="postgresql://user:pass@localhost:5432/db?schema=public" pnpm p
 
 # ---- Build Stage ----
 FROM base AS build
-RUN npm install -g pnpm
+RUN npm install -g pnpm@10.33.2
 COPY --from=deps /usr/src/app/node_modules ./node_modules
 COPY . .
 RUN pnpm build
