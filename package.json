@@ -2,6 +2,7 @@
   "name": "procurement-api-v6",
   "version": "0.0.1",
   "private": true,
+  "packageManager": "pnpm@10.33.2",
   "description": "API foundation for managing procurement vendors, contracts, invoices, and renewals",
   "scripts": {
     "build": "nest build",
@@ -53,5 +54,16 @@
     "ts-node": "^10.9.2",
     "typescript": "^5.4.2",
     "typescript-eslint": "^8.38.0"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "@prisma/client",
+      "@prisma/engines",
+      "prisma"
+    ],
+    "ignoredBuiltDependencies": [
+      "@scarf/scarf",
+      "dtrace-provider"
+    ]
   }
 }
