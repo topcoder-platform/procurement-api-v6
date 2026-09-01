@@ -106,4 +106,12 @@ Optional:
 
 ## Local Development
 
-Run `nvm use`, install dependencies with `pnpm install`, generate Prisma with `pnpm prisma generate`, and start the service with `pnpm start:dev`.
+Node.js 26.5.1 and pnpm 10.33.2 are the supported local toolchain. Run
+`nvm use`, install dependencies with `pnpm install`, generate Prisma with
+`pnpm prisma generate`, and start the service with `pnpm start:dev`.
+
+## Container Runtime
+
+The production image uses Alpine 3.24's patched Node.js 26.5.1 package and runs
+as the unprivileged `app` user (UID 10001). Build-only package managers and
+development dependencies are excluded from the final image.

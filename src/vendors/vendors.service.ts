@@ -127,7 +127,7 @@ export class VendorsService {
    *
    * @returns Total number of vendors.
    */
-  async count(): Promise<number> {
+  count(): Promise<number> {
     return this.db.vendor.count();
   }
 

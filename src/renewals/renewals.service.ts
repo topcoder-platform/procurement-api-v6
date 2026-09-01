@@ -244,7 +244,7 @@ export class RenewalsService {
    *
    * @returns Number of renewals that have not reached PO release.
    */
-  async countActive(): Promise<number> {
+  countActive(): Promise<number> {
     return this.db.renewal.count({
       where: {
         stage: { not: TERMINAL_RENEWAL_STAGE },
