@@ -178,7 +178,7 @@ export class ContractsService {
    *
    * @returns Number of active contracts whose end date has not passed.
    */
-  async countActive(): Promise<number> {
+  countActive(): Promise<number> {
     return this.db.contract.count({
       where: {
         status: ContractStatus.active,
