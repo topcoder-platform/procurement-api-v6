@@ -2,6 +2,7 @@ packages:
   - .
 
 overrides:
+  tc-core-library-js: https://codeload.github.com/topcoder-platform/tc-core-library-js/tar.gz/c262f4aca971904f308085bdeaaed35cdf3cfa7d
   axios: 1.18.1
   'brace-expansion@^1.0.0': 1.1.18
   'brace-expansion@^2.0.0': 2.1.4

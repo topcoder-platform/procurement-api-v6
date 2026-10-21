@@ -1,3 +1,4 @@
+import { auth, Principal } from "tc-core-library-js";
 import {
   CanActivate,
   ExecutionContext,
@@ -7,11 +8,7 @@ import {
 } from "@nestjs/common";
 import { Reflector } from "@nestjs/core";
 import { ProcurementRoles } from "../../app-constants";
-import {
-  AuthUserClaims,
-  getNormalizedRoles,
-  getNormalizedScopes,
-} from "../claims.util";
+import { AuthUserClaims, getNormalizedRoles } from "../claims.util";
 import { SCOPES_KEY } from "../decorators/scopes.decorator";
 
 const procurementRoles = new Set(
@@ -101,7 +98,6 @@ export class ProcurementAccessGuard implements CanActivate {
       return false;
     }
 
-    const scopes = new Set(getNormalizedScopes(authUser));
-    return requiredScopes.some((scope) => scopes.has(scope.toLowerCase()));
+    return auth.hasScopes(authUser as Principal, [...requiredScopes], "any");
   }
 }

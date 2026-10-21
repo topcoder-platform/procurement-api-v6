@@ -115,3 +115,8 @@ Node.js 26.5.1 and pnpm 10.33.2 are the supported local toolchain. Run
 The production image uses Alpine 3.24's patched Node.js 26.5.1 package and runs
 as the unprivileged `app` user (UID 10001). Build-only package managers and
 development dependencies are excluded from the final image.
+
+## Keycloak migration branch
+
+On `keycloak_m2M`, follow [Keycloak configuration and rollout](docs/keycloak-m2m.md).
+Legacy Auth0 M2M settings below do not configure token issuance on this branch.

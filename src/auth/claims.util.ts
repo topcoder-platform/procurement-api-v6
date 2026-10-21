@@ -1,4 +1,5 @@
 export type AuthUserClaims = {
+  kind?: "user" | "service";
   isMachine?: boolean;
   role?: string[] | string;
   roles?: string[] | string;
@@ -45,18 +46,6 @@ function normalizeRoles(
 }
 
 /**
- * Normalizes scope claims that may be space-delimited strings or arrays.
- *
- * @param values Scope claim value or values from a token.
- * @returns Lowercase scope values suitable for exact scope comparisons.
- */
-function normalizeScopes(
-  values: readonly string[] | string | undefined,
-): string[] {
-  return normalizeClaims(values, /\s+/);
-}
-
-/**
  * Returns normalized role claims from both `roles` and `role`.
  *
  * @param authUser Authenticated user object attached by the auth middleware.
@@ -66,18 +55,5 @@ export function getNormalizedRoles(authUser?: AuthUserClaims): string[] {
   return [
     ...normalizeRoles(authUser?.roles),
     ...normalizeRoles(authUser?.role),
-  ];
-}
-
-/**
- * Returns normalized scope claims from both `scopes` and `scope`.
- *
- * @param authUser Authenticated user object attached by the auth middleware.
- * @returns Lowercase normalized scope values.
- */
-export function getNormalizedScopes(authUser?: AuthUserClaims): string[] {
-  return [
-    ...normalizeScopes(authUser?.scopes),
-    ...normalizeScopes(authUser?.scope),
   ];
 }

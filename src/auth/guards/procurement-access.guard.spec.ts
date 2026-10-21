@@ -8,6 +8,7 @@ import { ProcurementRoles, ProcurementScopes } from "../../app-constants";
 import { ProcurementAccessGuard } from "./procurement-access.guard";
 
 type AuthUserFixture = {
+  kind?: "user" | "service";
   isMachine?: boolean;
   roles?: string[];
   role?: string | string[];
@@ -94,6 +95,7 @@ describe("ProcurementAccessGuard", () => {
     expect(
       guard.canActivate(
         createExecutionContext({
+          kind: "service",
           isMachine: true,
           scopes: [ProcurementScopes.Read],
         }),
@@ -107,6 +109,7 @@ describe("ProcurementAccessGuard", () => {
     expect(
       guard.canActivate(
         createExecutionContext({
+          kind: "service",
           isMachine: true,
           scopes: [ProcurementScopes.Write],
         }),
@@ -118,6 +121,7 @@ describe("ProcurementAccessGuard", () => {
     expect(() =>
       guard.canActivate(
         createExecutionContext({
+          kind: "service",
           isMachine: true,
           scopes: [ProcurementScopes.Write],
         }),
@@ -131,6 +135,7 @@ describe("ProcurementAccessGuard", () => {
     expect(() =>
       guard.canActivate(
         createExecutionContext({
+          kind: "service",
           isMachine: true,
           scopes: [ProcurementScopes.Read],
         }),
