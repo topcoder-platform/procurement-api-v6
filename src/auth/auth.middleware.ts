@@ -7,7 +7,10 @@ import { Request, Response, NextFunction } from "express";
 import { middleware } from "tc-core-library-js";
 import { ConfigService } from "@nestjs/config";
 
-/** Uses the common validator for member and Keycloak service principals on HTTP requests. */
+/**
+ * Uses the common validator for member and service principals on HTTP requests.
+ * `USE_KEYCLOAK` (read by tc-core-library-js) selects which machine tokens are trusted.
+ */
 @Injectable()
 export class AuthMiddleware implements NestMiddleware {
   private readonly authenticator: ReturnType<
@@ -15,9 +18,12 @@ export class AuthMiddleware implements NestMiddleware {
   >;
 
   /**
-   * Initializes explicit Keycloak configuration and configured member trust.
+   * Builds the shared validator. `USE_KEYCLOAK=true` requires `KEYCLOAK_ISSUER`,
+   * `KEYCLOAK_AUDIENCE` and `KEYCLOAK_TOKEN_URL`; unset or `false` (Auth0) needs none of
+   * them and trusts Auth0 machine tokens through `LEGACY_M2M_ISSUERS`/`LEGACY_M2M_AUDIENCE`.
+   * The core reads those settings from the environment.
    * @param config Environment configuration for member signing keys and issuers.
-   * @throws Error when shared authentication configuration is invalid.
+   * @throws TypeError when `USE_KEYCLOAK` is not true/false or the selected settings are invalid.
    */
   constructor(config: ConfigService) {
     const configuredIssuers = config.get<string>("VALID_ISSUERS") || "[]";

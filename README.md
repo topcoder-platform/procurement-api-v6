@@ -102,6 +102,10 @@ Required:
 
 Optional:
 
+* `USE_KEYCLOAK` - `true` validates Keycloak machine tokens and requires `KEYCLOAK_ISSUER`,
+  `KEYCLOAK_AUDIENCE` and `KEYCLOAK_TOKEN_URL`; unset or `false` validates Auth0 machine
+  tokens through `LEGACY_M2M_ISSUERS`/`LEGACY_M2M_AUDIENCE`. Any other value fails at startup.
+
 * `PORT` - HTTP port, default `3000`.
 
 ## Local Development
@@ -119,4 +123,7 @@ development dependencies are excluded from the final image.
 ## Keycloak migration branch
 
 On `keycloak_m2M`, follow [Keycloak configuration and rollout](docs/keycloak-m2m.md).
-Legacy Auth0 M2M settings below do not configure token issuance on this branch.
+`USE_KEYCLOAK=true` validates Keycloak machine tokens (`KEYCLOAK_ISSUER`,
+`KEYCLOAK_AUDIENCE`, `KEYCLOAK_TOKEN_URL`); unset or `false` validates Auth0 machine
+tokens through `LEGACY_M2M_ISSUERS`/`LEGACY_M2M_AUDIENCE`. This service never issues
+M2M tokens.
