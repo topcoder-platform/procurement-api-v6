@@ -5,7 +5,7 @@ workload and its callers are ready. Existing DEV services continue using Auth0.
 The core dependency is pinned to a reviewed Keycloak prerelease commit, including
 transitive wrapper uses through the pnpm override. No npm latest dependency is used.
 
-`pnpm-lock.yaml` resolves a single 4.0.0-keycloak.1 (core commit `e844764`).
+`pnpm-lock.yaml` resolves a single 4.0.0-keycloak.2 (core commit `112d54a`).
 
 ## Provider switch: `USE_KEYCLOAK`
 
