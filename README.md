@@ -106,13 +106,13 @@ Optional:
 
 ## Local Development
 
-Node.js 26.5.1 and pnpm 10.33.2 are the supported local toolchain. Run
+Node.js 26.12.1 and pnpm 11.15.1 are the supported local toolchain. Run
 `nvm use`, install dependencies with `pnpm install`, generate Prisma with
 `pnpm prisma generate`, and start the service with `pnpm start:dev`.
 
 ## Container Runtime
 
-The production image uses Alpine 3.24's patched Node.js 26.5.1 package and runs
+The production image uses Alpine 3.24's patched Node.js 26.12.1 package and runs
 as the unprivileged `app` user (UID 10001). Build-only package managers and
 development dependencies are excluded from the final image.
 
@@ -149,3 +149,12 @@ Node major. The runtime keeps Alpine's dynamically linked Node and system
 libraries. Existing non-root users and application entrypoints are preserved.
 Build stages using a versioned official Node image retain their configured
 version, and pnpm build arguments are explicitly declared in the consuming stage.
+
+## Dependency security checks
+
+The frozen pnpm graph pins the shared Topcoder library to an immutable revision
+and applies patched runtime and tooling dependencies. Older tooling uses a
+tested minimatch adapter. Run `pnpm audit` and `pnpm test:dependency-compat`
+alongside the existing lint, build and test checks when changing dependencies.
+Container bases are pinned by digest, and Alpine packages receive security
+updates during image builds.
