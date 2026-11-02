@@ -33,8 +33,7 @@ export type UnhealthyHealthCheckResult = {
 };
 
 export type HealthCheckResult =
-  | HealthyHealthCheckResult
-  | UnhealthyHealthCheckResult;
+  HealthyHealthCheckResult | UnhealthyHealthCheckResult;
 
 /**
  * Service-level health checker for procurement-api-v6.
