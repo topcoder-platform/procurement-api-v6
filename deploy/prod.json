@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 2,
+  "environment": "prod",
+  "accountId": "409275337247",
+  "region": "us-east-1",
+  "deployRoleArn": "arn:aws:iam::409275337247:role/procurement-api-v6-prod-deploy",
+  "taskRoleArn": null,
+  "executionRoleArn": "arn:aws:iam::409275337247:role/ecsTaskExecutionRole",
+  "cluster": "internal-api-serverless",
+  "service": "procurement-api-v6",
+  "taskFamily": "procurement-api-v6",
+  "circleciOrgId": "947bef5e-1669-415d-b83c-4fc85155b7df",
+  "circleciProjectId": "26763da4-1861-4740-9215-2c62da7840f0",
+  "repository": "github.com/topcoder-platform/procurement-api-v6",
+  "branch": "master",
+  "images": {
+    "procurement-api-v6": "procurement-api-v6"
+  }
+}
