@@ -6,9 +6,9 @@ import {
 } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { NextFunction, Request, Response } from "express";
-import { middleware } from "tc-core-library-js";
+import { createJwtAuthenticator } from "tc-core-library-js";
 
-const { jwtAuthenticator: authenticator } = middleware;
+const authenticator = createJwtAuthenticator;
 
 const logger = new Logger("AuthMiddleware");
 
@@ -87,10 +87,7 @@ export class AuthMiddleware implements NestMiddleware {
    * @param configService Config service used to read authentication settings.
    */
   constructor(private readonly configService: ConfigService) {
-    const authSecret = this.configService.get<string>(
-      "AUTH_SECRET",
-      "mysecret",
-    );
+    const authSecret = this.configService.get<string>("AUTH_SECRET");
     let issuersValue = this.configService.get<string>(
       "VALID_ISSUERS",
       '["https://api.topcoder.com","https://api.topcoder-dev.com","https://topcoder-dev.auth0.com/","https://auth.topcoder-dev.com/","https://topcoder.auth0.com/","https://auth.topcoder.com/"]',
@@ -102,6 +99,8 @@ export class AuthMiddleware implements NestMiddleware {
     }
 
     this.jwtAuthenticator = authenticator({
+      AUTH0_AUDIENCE: process.env.AUTH0_AUDIENCE,
+      JWT_AUDIENCE: process.env.JWT_AUDIENCE,
       AUTH_SECRET: authSecret,
       VALID_ISSUERS: issuersValue,
     });
