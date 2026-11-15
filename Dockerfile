@@ -1,8 +1,8 @@
-ARG NODE_VERSION=26.12.1
+ARG NODE_VERSION=26.13.1
 ARG PNPM_VERSION=11.15.1
 
 # ---- Base Stage ----
-FROM node:${NODE_VERSION}-alpine3.24@sha256:40cd011b55415bc894e45b02fdd5a5dfde056921b7d23a64c74f80497af48797 AS base
+FROM node:${NODE_VERSION}-alpine3.24@sha256:6bd9ab43c0ec0190ca7b2d193906cb8b7edf6e7f4afa43ddeccd6452710bffb5 AS base
 ARG PNPM_VERSION
 WORKDIR /usr/src/app
 
@@ -34,7 +34,7 @@ ARG NODE_VERSION
 # Alpine replaces old APK patch versions. Keep the configured Node major while
 # accepting maintained patch releases and verify the selected runtime below.
 RUN apk upgrade --no-cache \
-    && apk add --no-cache "nodejs-current~${NODE_VERSION%%.*}" \
+    && apk add --no-cache 'zlib>=1.4-r0' "nodejs-current~${NODE_VERSION%%.*}" "nodejs-current>=${NODE_VERSION}-r0" \
     && test "$(node -p 'process.versions.node.split(".")[0]')" = "${NODE_VERSION%%.*}" \
     && addgroup -g 10001 app \
     && adduser -D -u 10001 -G app -h /home/app app
