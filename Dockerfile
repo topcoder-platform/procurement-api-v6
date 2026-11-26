@@ -13,6 +13,7 @@ RUN apk upgrade --no-cache && npm install -g pnpm@${PNPM_VERSION}
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 COPY tools ./tools
 RUN pnpm install --frozen-lockfile
+COPY prisma.config.ts ./
 COPY prisma ./prisma
 RUN DATABASE_URL="postgresql://user:pass@localhost:5432/db?schema=public" pnpm prisma generate
 
@@ -31,11 +32,9 @@ RUN pnpm prune --prod
 # ---- Production Stage ----
 FROM alpine:3.24@sha256:be2656061b536c1883c4034790e21d0a09c5aaaf51968b89368a3c0371ea2c9a AS production
 ARG NODE_VERSION
-# Alpine replaces old APK patch versions. Keep the configured Node major while
-# accepting maintained patch releases and verify the selected runtime below.
 RUN apk upgrade --no-cache \
-    && apk add --no-cache 'libcrypto3>=3.5.9-r1' 'libssl3>=3.5.9-r1' 'zlib>=1.4-r0' "nodejs-current~${NODE_VERSION%%.*}" "nodejs-current>=${NODE_VERSION}-r0" \
-    && test "$(node -p 'process.versions.node.split(".")[0]')" = "${NODE_VERSION%%.*}" \
+    && apk add --no-cache 'libcrypto3>=3.5.9-r1' 'libssl3>=3.5.9-r1' 'zlib>=1.4-r0' 'nodejs-current~26.13.1' \
+    && test "$(node -p 'process.versions.node')" = "${NODE_VERSION}" \
     && addgroup -g 10001 app \
     && adduser -D -u 10001 -G app -h /home/app app
 
