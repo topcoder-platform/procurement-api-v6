@@ -6,7 +6,7 @@
   "description": "API foundation for managing procurement vendors, contracts, invoices, and renewals",
   "scripts": {
     "prebuild": "prisma generate",
-    "build": "tsc -p tsconfig.json",
+    "build": "tsc -p tsconfig.build.json",
     "start": "node dist/main.js",
     "start:dev": "nest start --watch",
     "start:prod": "node dist/main.js",
